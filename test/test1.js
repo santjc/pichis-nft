@@ -11,8 +11,8 @@ describe("Pichi", function () {
 
 
     it('Pichis function', async () =>{
-        await pichis.addPichi();
-        const result = await pichis.getPichi(1); 
+        await pichis.mintToken('Pichilandis');
+        const result = await pichis.getAllPichis; 
         console.log(result);
     })
 });
