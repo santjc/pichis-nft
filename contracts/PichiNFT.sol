@@ -2,14 +2,16 @@
 pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract Characters is ERC721{
+
+contract PichiNFT is ERC721, Ownable, ERC721URIStorage{
     uint randNonce = 0;
-    uint256 lastId = 0;
-    address public owner;
-    uint256 tokenId = lastId;
-    constructor() ERC721("NFT", "NFT"){
-        owner = msg.sender;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+    constructor() ERC721("MyPichi", "NFT"){
     }
     struct Pichi{
         uint256 id;
@@ -27,26 +29,11 @@ contract Characters is ERC721{
     Pichi[] public allPichis;
 
 
+
     event AddPichiEvent(uint _id, string _name, uint _headAcc, uint _bodyAcc, uint _stainsColor, uint _pawsColor);
     event RandomGenerate(uint _seed);
     
 
-    
-
-    function addPichi(string memory _name) public returns(Pichi memory){
-        
-        Pichi memory currentPichi;
-        currentPichi.id = lastId;
-        currentPichi.name = _name;
-        currentPichi.headAcc = rand();
-        currentPichi.bodyAcc = rand();
-        currentPichi.stainsColor = rand();
-        currentPichi.pawsColor = rand();
-        pichis[lastId] = currentPichi;
-        lastId++;
-        emit AddPichiEvent(currentPichi.id, currentPichi.name, currentPichi.headAcc, currentPichi.bodyAcc, currentPichi.stainsColor, currentPichi.pawsColor);
-        return currentPichi;
-    }
 
     function getPichi(uint256 _id) public view returns(Pichi memory){
         return pichis[_id];
@@ -61,13 +48,27 @@ contract Characters is ERC721{
     }
 
 
-    function mintToken(string calldata _pichiName) public payable{
+    function mintPichi(string memory tokenURI) public onlyOwner{
+        string memory _pichiName = randomName();
+        Pichi memory currentPichi;
+        uint256 newId = _tokenIds.current();
         require(!pichiExists[_pichiName], "Already exist");
-        _safeMint(msg.sender, tokenId);
-        allPichis.push(addPichi(_pichiName));
-        pichisAddress[msg.sender].push(addPichi(_pichiName));
-
+        
+        currentPichi.id = newId;
+        currentPichi.name = _pichiName;
+        currentPichi.headAcc = rand();
+        currentPichi.bodyAcc = rand();
+        currentPichi.stainsColor = rand();
+        currentPichi.pawsColor = rand();
+        pichis[newId] = currentPichi;
+        
+        _safeMint(msg.sender, newId);
+        _setTokenURI(newId, tokenURI);
+        allPichis.push(currentPichi);
+        pichisAddress[msg.sender].push(currentPichi);
         pichiExists[_pichiName] = true;
+        emit AddPichiEvent(currentPichi.id, currentPichi.name, currentPichi.headAcc, currentPichi.bodyAcc, currentPichi.stainsColor, currentPichi.pawsColor);
+        _tokenIds.increment();
     }
 
 
@@ -79,4 +80,5 @@ contract Characters is ERC721{
         emit RandomGenerate(seed);
         return result;
     }
+
 }

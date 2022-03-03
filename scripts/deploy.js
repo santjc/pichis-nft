@@ -1,12 +1,12 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Characters = await hre.ethers.getContractFactory("Characters");
-  const character = await Characters.deploy();
+  const PichiNFT = await hre.ethers.getContractFactory("PichiNFT");
+  const PichiNFT = await Characters.deploy();
 
-  await character.deployed();
+  await PichiNFT.deployed();
 
-  console.log("Character deployed to:", character.address);
+  console.log("Character deployed to:", PichiNFT.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
