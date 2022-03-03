@@ -1,0 +1,16 @@
+{
+    "attributes": [
+      {
+        "trait_type": "Breed",
+        "value": "Street"
+      },
+      {
+        "trait_type": "Crazy Level",
+        "value": "Over 4000"
+      }
+    ],
+    "description": "Crazy Pichi with Boris the Rabbit.",
+    "image": "https://gateway.pinata.cloud/ipfs/QmQ9MKKLJpXSjMyo4wJCVECaMKwhyHWwvwshe6zh9KfLQh",
+    "name": "Pichiloca y Boris"
+  }
+  
