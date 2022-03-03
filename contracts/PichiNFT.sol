@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 
-contract PichiNFT is ERC721, Ownable, ERC721URIStorage{
+contract PichiNFT is Ownable, ERC721URIStorage{
     uint randNonce = 0;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
@@ -49,7 +49,7 @@ contract PichiNFT is ERC721, Ownable, ERC721URIStorage{
 
 
     function mintPichi(string memory tokenURI) public onlyOwner{
-        string memory _pichiName = randomName();
+        string memory _pichiName = 'Pichiloca';
         Pichi memory currentPichi;
         uint256 newId = _tokenIds.current();
         require(!pichiExists[_pichiName], "Already exist");
