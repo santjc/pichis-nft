@@ -10,9 +10,9 @@ describe("Pichi", function () {
     });
 
 
-    it('Pichis function', async () =>{
-        await pichis.mintPichi('A');
-        const result = await pichis.getAllPichis; 
-        console.log(result);
+    it('Testing contract mint', async () =>{
+        await pichis.mintPichi('Pichiloca');
+        const myPichis = await pichis.getMyPichis(); 
+        console.log(myPichis);
     })
 });
